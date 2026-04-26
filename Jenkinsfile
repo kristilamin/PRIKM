@@ -34,10 +34,10 @@ pipeline {
     }
     post {
         success {
-            telegramSend(message: '✅ Lab_3 build SUCCESS!', chatId: '709835761')
+            telegramSend(message: '✅ Lab_3 build SUCCESS!', chatId: 709835761)
         }
         failure {
-            telegramSend(message: '❌ Lab_3 build FAILED!', chatId: '709835761')
+            telegramSend(message: '❌ Lab_3 build FAILED!', chatId: 709835761)
         }
     }
 }
