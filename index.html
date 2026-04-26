@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Lab_1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            background: #1e1e2e;
+            border: 1px solid #7c3aed;
+            border-radius: 16px;
+            padding: 48px 64px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.3);
+        }
+        h1 { font-size: 2rem; margin-bottom: 12px; color: #a78bfa; }
+        p { color: #94a3b8; margin-bottom: 8px; }
+        .badge {
+            display: inline-block;
+            margin-top: 20px;
+            background: #7c3aed;
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 Hello from Docker!</h1>
+        <p>Deployed automatically by <strong>Jenkins</strong></p>
+        <p>Image: <code>nginx/custom:latest</code></p>
+        <div class="badge">✅ Lab_1 — Done</div>
+    </div>
+</body>
+</html>
