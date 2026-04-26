@@ -3,34 +3,33 @@ pipeline {
     stages {
         stage('Start') {
             steps {
-                echo 'Lab_1: nginx/custom — by Khrystyna Ponomarenko ITPA-11'
+                echo 'Lab_2: started by GitHub'
             }
         }
         stage('Clean') {
             steps {
-                sh 'docker stop nginx-lab1 || true'
-                sh 'docker rm nginx-lab1 || true'
+                sh 'docker stop nginx-lab2 || true'
+                sh 'docker rm nginx-lab2 || true'
             }
         }
-        stage('Build nginx/custom') {
+        stage('Image build') {
             steps {
-                sh 'docker build -t nginx/custom:latest .'
+                sh "docker build -t prikm:latest ."
+                sh "docker tag prikm kristilamin/prikm:latest"
+                sh "docker tag prikm kristilamin/prikm:$BUILD_NUMBER"
             }
         }
-        stage('Test nginx/custom') {
+        stage('Push to registry') {
             steps {
-                sh 'docker images | grep nginx/custom'
-                echo 'Image exists — Test passed!'
+                withDockerRegistry([ credentialsId: "dockerhub_token", url: "" ]) {
+                    sh "docker push kristilamin/prikm:latest"
+                    sh "docker push kristilamin/prikm:$BUILD_NUMBER"
+                }
             }
         }
-        stage('Deploy nginx/custom') {
+        stage('Deploy image') {
             steps {
-                sh 'docker run -d --name nginx-lab1 -p 80:80 nginx/custom:latest'
-            }
-        }
-        stage('Notify') {
-            steps {
-                echo 'Deployment finished successfully!'
+                sh "docker run -d --name nginx-lab2 -p 80:80 kristilamin/prikm:latest"
             }
         }
     }
