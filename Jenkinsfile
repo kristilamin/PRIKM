@@ -33,11 +33,11 @@ pipeline {
         }
     }
     post {
-        success {
-            telegramSend(message: 'Lab_3 build SUCCESS!', chatId: 709835761)
-        }
-        failure {
-            telegramSend(message: 'Lab_3 build FAILED!', chatId: 709835761)
-        }
+    success {
+        sh 'curl -s -X POST https://api.telegram.org/bot8576580592:AAGJdLy94LMvY-jwDoLzhEsuq90a5t33Mw4/sendMessage -d chat_id=709835761 -d text=Lab3_build_SUCCESS'
     }
+    failure {
+        sh 'curl -s -X POST https://api.telegram.org/bot8576580592:AAGJdLy94LMvY-jwDoLzhEsuq90a5t33Mw4/sendMessage -d chat_id=709835761 -d text=Lab3_build_FAILED'
+    }
+}
 }
