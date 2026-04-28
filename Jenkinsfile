@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Start') {
             steps {
-                echo 'Lab_3: started'
+                echo "Lab_3: started for environment: ${params.ENVIRONMENT}"
             }
         }
         stage('Clean') {
