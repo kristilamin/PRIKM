@@ -28,10 +28,11 @@ pipeline {
         }
         stage('Smoke Test') {
             steps {
+                sh 'sleep 10'
                 sh 'curl -s http://localhost:8086 | grep -i nginx'
                 sh 'curl -s http://localhost:9091'
-                sh 'curl -s http://localhost:3001'
-            }
+                sh 'curl -f http://localhost:3001/api/health'
+            }        
         }
     }
     post {
