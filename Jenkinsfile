@@ -1,43 +1,45 @@
 pipeline {
     agent any
-    triggers {
-        cron('H/5 * * * *')
-    }
     stages {
-        stage('Start') {
+        stage('Checkout') {
             steps {
-                echo "Lab_3: started for environment: ${params.ENVIRONMENT}"
+                echo 'Code checked out from Git'
             }
         }
-        stage('Clean') {
+        stage('Terraform Init') {
             steps {
-                sh 'docker stop nginx-lab3 || true'
-                sh 'docker rm nginx-lab3 || true'
+                sh 'cd /var/lib/jenkins/workspace/Lab_8/terraform && terraform init'
             }
         }
-        stage('Build nginx/custom') {
+        stage('Terraform Plan') {
             steps {
-                sh 'docker build -t nginx/custom:latest .'
+                sh 'cd /var/lib/jenkins/workspace/Lab_8/terraform && terraform plan'
             }
         }
-        stage('Test nginx/custom') {
+        stage('Terraform Apply') {
             steps {
-                sh 'docker images | grep nginx/custom'
-                echo 'Image exists — Test passed!'
+                sh 'cd /var/lib/jenkins/workspace/Lab_8/terraform && terraform apply -auto-approve'
             }
         }
-        stage('Deploy nginx/custom') {
+        stage('Ansible Deploy') {
             steps {
-                sh 'docker run -d --name nginx-lab3 -p 80:80 nginx/custom:latest'
+                sh 'cd /var/lib/jenkins/workspace/Lab_8/ansible && ansible-playbook playbook.yml'
+            }
+        }
+        stage('Smoke Test') {
+            steps {
+                sh 'curl -s http://localhost:8086 | grep -i nginx'
+                sh 'curl -s http://localhost:9091'
+                sh 'curl -s http://localhost:3001'
             }
         }
     }
     post {
-    success {
-        sh 'curl -s -X POST https://api.telegram.org/bot8576580592:AAGJdLy94LMvY-jwDoLzhEsuq90a5t33Mw4/sendMessage -d chat_id=709835761 -d text=Lab3_build_SUCCESS'
+        failure {
+            sh 'cd /var/lib/jenkins/workspace/Lab_8/terraform && terraform destroy -auto-approve'
+        }
+        always {
+            echo 'Pipeline finished!'
+        }
     }
-    failure {
-        sh 'curl -s -X POST https://api.telegram.org/bot8576580592:AAGJdLy94LMvY-jwDoLzhEsuq90a5t33Mw4/sendMessage -d chat_id=709835761 -d text=Lab3_build_FAILED'
-    }
-}
 }
