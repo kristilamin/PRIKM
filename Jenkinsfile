@@ -28,10 +28,9 @@ pipeline {
         }
         stage('Smoke Test') {
             steps {
-                sh 'sleep 15'
+                sh 'sleep 5'
                 sh 'curl -s http://localhost:8086 | grep -i nginx'
-                sh 'curl -s http://localhost:9091'
-                sh 'curl -s http://localhost:3001 | grep -i grafana || echo "Grafana starting..."'
+                sh 'curl -s http://localhost:8087 | grep -i nginx'
                 echo 'Smoke test passed!'
             }
         }

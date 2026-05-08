@@ -1,4 +1,4 @@
-- name: Deploy Application and Monitoring
+- name: Deploy Application
   hosts: localhost
   connection: local
   become: yes
@@ -15,27 +15,4 @@
         image: nginx:latest
         ports:
           - "8087:80"
-        state: started
-
-    - name: Copy Prometheus config
-      template:
-        src: templates/prometheus.yml.j2
-        dest: /tmp/prometheus.yml
-
-    - name: Run Prometheus Container
-      docker_container:
-        name: lab8_ansible_prometheus
-        image: prom/prometheus:latest
-        ports:
-          - "9092:9090"
-        volumes:
-          - /tmp/prometheus.yml:/etc/prometheus/prometheus.yml
-        state: started
-
-    - name: Run Grafana Container
-      docker_container:
-        name: lab8_ansible_grafana
-        image: grafana/grafana:latest
-        ports:
-          - "3002:3000"
         state: started
