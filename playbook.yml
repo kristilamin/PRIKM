@@ -1,0 +1,17 @@
+- name: Deploy Containerized App
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Run Application Container
+      docker_container:
+        name: lab6_ansible_nginx
+        image: nginx:latest
+        ports:
+          - "8083:80"
+        state: started
