@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Code checked out'
+            }
+        }
+        stage('Terraform Init') {
+            steps {
+                sh 'cd /home/khrystyna/lab7 && terraform init'
+            }
+        }
+        stage('Terraform Plan') {
+            steps {
+                sh 'cd /home/khrystyna/lab7 && terraform plan'
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                sh 'cd /home/khrystyna/lab7 && terraform apply -auto-approve'
+            }
+        }
+        stage('Ansible Deploy') {
+            steps {
+                sh 'cd /home/khrystyna/lab7 && ansible-playbook -i inventory.ini playbook.yml'
+            }
+        }
+    }
+    post {
+        failure {
+            sh 'cd /home/khrystyna/lab7 && terraform destroy -auto-approve'
+        }
+        always {
+            echo 'Pipeline finished!'
+        }
+    }
+}
