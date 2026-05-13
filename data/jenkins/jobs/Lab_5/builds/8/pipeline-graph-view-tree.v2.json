@@ -1,0 +1,1 @@
+{"stages":[{"id":"2","name":"System Generated","children":[],"state":"failure","type":"PIPELINE_START","title":"System Generated","isSequential":false,"synthetic":true,"placeholder":true,"pauseDurationMillis":0,"totalDurationMillis":149193675,"startTimeMillis":1777754640127,"url":"/job/Lab_5/8/stages/?selected-node=2"}],"complete":true}
